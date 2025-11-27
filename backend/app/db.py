@@ -1,21 +1,23 @@
 import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+# 1. URL de la base de datos
+# Si no tienes variable de entorno, esto crea un SQLite local "app.db" en backend/app/
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
 
-# Fallback de desarrollo: si no hay DATABASE_URL, usamos SQLite local
-if not DATABASE_URL:
-    print("⚠️ WARNING: DATABASE_URL is not set. Using local SQLite dev.db")
-    DATABASE_URL = "sqlite:///./dev.db"
+# 2. Engine
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+)
 
-# Ajuste necesario cuando usamos SQLite
-connect_args = {}
-if DATABASE_URL.startswith("sqlite"):
-    connect_args = {"check_same_thread": False}
-
-engine = create_engine(DATABASE_URL, connect_args=connect_args)
+# 3. Session + Base
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+# 4. IMPORTAR MODELOS ANTES DEL create_all  ⬅️ ESTO ES LO QUE FALTABA
+from . import models  # noqa: E402,F401
+
+# 5. Crear las tablas
 Base.metadata.create_all(bind=engine)
