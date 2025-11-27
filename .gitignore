@@ -1,3 +1,26 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# SQLite databases
+*.db
+
+# Uploads folder
+backend/uploads/
+
+# Env files
+.env
+
+# Node
+node_modules/
+dist/
+build/
+
+# macOS
+.DS_Store
 __pycache__/
 .env
 node_modules/
