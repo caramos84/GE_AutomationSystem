@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.routes import uploads
-
+from app.routes import cleaner
 from app.db import Base, engine
 from app import models
 
@@ -13,3 +13,5 @@ def read_health():
     return {"status": "ok"}
 
 app.include_router(uploads.router)
+app.include_router(cleaner.router, prefix="/clean", tags=["clean"])
+

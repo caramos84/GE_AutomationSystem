@@ -44,3 +44,4 @@ def generate_preview(file_path: str) -> dict:
         "rows": rows,
         "sample": sample,
     }
+
