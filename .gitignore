@@ -28,3 +28,5 @@ dist/
 build/
 .DS_Store
 
+backend/outputs/
+
