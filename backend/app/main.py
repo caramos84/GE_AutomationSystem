@@ -13,5 +13,6 @@ def read_health():
     return {"status": "ok"}
 
 app.include_router(uploads.router)
+app.include_router(cleaner.router)
 app.include_router(cleaner.router, prefix="/clean", tags=["clean"])
 
