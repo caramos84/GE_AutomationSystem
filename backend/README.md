@@ -1,29 +1,30 @@
-# Backend Setup
+# OP DataCleaner — Backend (FastAPI)
 
-## Crear entorno virtual
-1. Ubica una terminal en el directorio `backend/`.
-2. Crea el entorno virtual:
-   ```bash
-   python3 -m venv .venv
-   ```
-3. Activa el entorno virtual:
-   - En Linux/macOS:
-     ```bash
-     source .venv/bin/activate
-     ```
-   - En Windows (PowerShell):
-     ```powershell
-     .venv\\Scripts\\Activate.ps1
-     ```
+Backend del módulo **OP DataCleaner v1.0**, responsable de:
 
-## Instalar dependencias
-Con el entorno virtual activo, instala los requirements:
+- Subir y almacenar archivos CSV/XLSX  
+- Registrar uploads en base de datos  
+- Generar preview de columnas y sample  
+- Normalizar columnas  
+- Reordenar columnas  
+- Generar archivos limpios para DataMerge en InDesign  
+- Permitir descarga de los archivos procesados  
+
+---
+
+# 1. Requerimientos
+
+- Python 3.10+  
+- macOS / Linux / Windows  
+- Git  
+- FastAPI + Uvicorn  
+
+---
+
+# 2. Crear y activar entorno virtual
+
+Desde el directorio `backend/`:
+
 ```bash
-pip install -r requirements.txt
-```
+python3 -m venv .venv
 
-## Ejecutar la aplicación
-Desde el directorio `backend/` con el entorno virtual activo:
-```bash
-uvicorn app.main:app --reload
-```
