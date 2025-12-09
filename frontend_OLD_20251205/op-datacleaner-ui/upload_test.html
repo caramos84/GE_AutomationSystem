@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Upload Test</h1>
+
+  <input type="file" id="f" />
+  <button onclick="send()">Enviar</button>
+
+  <pre id="out"></pre>
+
+  <script>
+    async function send() {
+      const file = document.getElementById("f").files[0];
+      if (!file) return alert("Select a file");
+
+      const fd = new FormData();
+      fd.append("file", file);
+
+      const res = await fetch("http://localhost:8000/uploads/", {
+        method: "POST",
+        body: fd
+      });
+
+      const text = await res.text();
+      document.getElementById("out").textContent = text;
+    }
+  </script>
+</body>
+</html>
+
