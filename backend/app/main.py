@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from app.routes import uploads
 from app.routes import cleaner
+from app.routes import auth
 from app.db import Base, engine
 from app import models
 from fastapi.middleware.cors import CORSMiddleware
