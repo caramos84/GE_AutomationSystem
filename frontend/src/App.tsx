@@ -124,6 +124,12 @@ function App() {
 
     const columnsToSend = selectedColumns.map(col => preview?.columnMap?.[col] || col)
 
+    console.log('=== DEBUG COLUMNAS ===')
+    console.log('selectedColumns:', selectedColumns)
+    console.log('columnMap:', preview?.columnMap)
+    console.log('columnsToSend:', columnsToSend)
+    console.log('generateNames:', generateNames)
+
     try {
       const res = await fetch(`${API_BASE}/clean/clean/process`, {
         method: 'POST',
@@ -553,7 +559,7 @@ function App() {
             {/* Opción de Generar Nombres */}
             <div style={{ marginBottom: '2rem' }}>
               {(() => {
-                const required = ['PLU', 'DESC PLU', 'DESC MARCA']
+		const required = ['PLU', 'ID MARCA', 'DESC PLU', 'CONTENIDO']
                 const missingCols = required.filter(col => !selectedColumns.includes(col))
                 const canGenerateNames = missingCols.length === 0
                 
@@ -613,7 +619,7 @@ function App() {
                         marginTop: '0.5rem',
                         marginLeft: '1.625rem'
                       }}>
-                        De estar activa esta casilla se creará el nombre, basado en PLU, Descripción subcategoría y Marca.
+			De estar activa esta casilla se creará el nombre con formato: PLU_ID MARCA_DESC PLU_CONTENIDO.psd
                       </p>
                     )}
                   </>

@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
+import unicodedata
 
 from app.services.column_normalizer import normalize_column_name
 
@@ -78,21 +79,37 @@ def generate_clean_outputs(
 
     result_df = pd.DataFrame(result_data, columns=result_columns)
 
-    # 5) (Opcional) Columna de nombre de imagen
+# 5) (Opcional) Columna de nombre de imagen
     if generate_image_names:
-        required = ["PLU", "DESC_PLU", "DESC_MARCA"]
+        required = ["PLU", "ID_MARCA", "DESC_PLU", "CONTENIDO"]
         if all(col in result_df.columns for col in required):
+            # Función auxiliar para quitar acentos
+            def remove_accents(text):
+                import unicodedata
+                nfkd = unicodedata.normalize('NFKD', str(text))
+                return ''.join([c for c in nfkd if not unicodedata.combining(c)])
+            
             result_df["IMAGEN"] = (
                 result_df["PLU"].astype(str).str.zfill(6)
                 + "_"
+                + result_df["ID_MARCA"]
+                .astype(str)
+                .apply(remove_accents)
+                .str.replace(r"\s+", "_", regex=True)
+                .str.upper()
+                + "_"
                 + result_df["DESC_PLU"]
                 .astype(str)
-                .str.replace(r"\s+", "", regex=True)
+                .apply(remove_accents)
+                .str.replace(r"\s+", "_", regex=True)
+                .str.upper()
                 + "_"
-                + result_df["DESC_MARCA"]
+                + result_df["CONTENIDO"]
                 .astype(str)
-                .str.replace(r"\s+", "", regex=True)
-                + ".PSD"
+                .apply(remove_accents)
+                .str.replace(r"\s+", "_", regex=True)
+                .str.upper()
+                + ".psd"
             )
             if "IMAGEN" not in result_columns:
                 result_columns.append("IMAGEN")
