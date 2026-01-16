@@ -81,6 +81,9 @@ function App() {
     try {
       const res = await fetch(`${API_BASE}/clean/clean/preview?file_id=${id}`, {
         method: 'POST',
+	headers: {
+	'Accept': 'application/json; charset=utf-8',
+	},
       })
 
       if (!res.ok) throw new Error('Error al cargar preview')

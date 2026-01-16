@@ -120,7 +120,7 @@ def download_clean(
 
     return FileResponse(
         path=str(output_path),
-        media_type="text/csv",
+        media_type="text/csv; charset=utf-8",
         filename=os.path.basename(output_path),
     )
 
