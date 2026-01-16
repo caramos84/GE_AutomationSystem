@@ -46,7 +46,7 @@ def generate_clean_outputs(
     if suffix in {".xlsx", ".xls"}:
         df = pd.read_excel(path)
     elif suffix == ".csv":
-        df = pd.read_csv(path)
+        df = pd.read_csv(path, encoding="utf-8")
     else:
         raise OutputEngineError(f"Unsupported file type: {suffix}")
 
