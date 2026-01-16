@@ -44,7 +44,7 @@ def generate_clean_outputs(
     # 1) Cargar archivo con pandas
     suffix = path.suffix.lower()
     if suffix in {".xlsx", ".xls"}:
-        df = pd.read_excel(path)
+        df = pd.read_excel(path, engine="openpyxl")
     elif suffix == ".csv":
         df = pd.read_csv(path, encoding="utf-8")
     else:
@@ -79,7 +79,13 @@ def generate_clean_outputs(
 
     result_df = pd.DataFrame(result_data, columns=result_columns)
 
-# 5) (Opcional) Columna de nombre de imagen
+    # Convertir columna DESCUENTO si existe (de decimal a porcentaje)
+    if "DESCUENTO" in result_df.columns:
+        result_df["DESCUENTO"] = result_df["DESCUENTO"].apply(
+            lambda x: f"{float(x)*100:.0f}%" if pd.notna(x) and isinstance(x, (int, float)) and 0 <= x <= 1 else x
+        )
+
+    # 5) (Opcional) Columna de nombre de imagen
     if generate_image_names:
         required = ["PLU", "ID_MARCA", "DESC_PLU", "CONTENIDO"]
         if all(col in result_df.columns for col in required):
@@ -122,8 +128,8 @@ def generate_clean_outputs(
     semicolon_path = outputs_dir / f"{base_name}_SEMICOLON.csv"
     comma_path = outputs_dir / f"{base_name}_COMMA.csv"
 
-    result_df.to_csv(semicolon_path, sep=";", index=False)
-    result_df.to_csv(comma_path, sep=",", index=False)
+    result_df.to_csv(semicolon_path, sep=";", index=False, encoding="utf-8-sig")
+    result_df.to_csv(comma_path, sep=",", index=False, encoding="utf-8-sig")
 
     return {
         "rows": int(result_df.shape[0]),
@@ -131,4 +137,3 @@ def generate_clean_outputs(
         "semicolon_path": str(semicolon_path),
         "comma_path": str(comma_path),
     }
-

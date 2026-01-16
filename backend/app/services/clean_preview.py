@@ -26,7 +26,7 @@ def generate_preview(file_path: str) -> dict:
     suffix = path.suffix.lower()
 
     if suffix in {".xlsx", ".xls"}:
-        data_frame = pd.read_excel(path)
+        data_frame = pd.read_excel(path, engine="openpyxl")
     elif suffix == ".csv":
         data_frame = pd.read_csv(path, encoding="utf-8")
     else:
