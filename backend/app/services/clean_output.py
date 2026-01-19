@@ -25,7 +25,7 @@ def generate_clean_outputs(
       (por ejemplo ['PLU', 'DESC_PLU', 'PRECIO_OFERTA'])
     - generate_image_names: si True, intenta crear columna IMAGEN.
 
-    Retorna:
+W    Retorna:
       {
         "rows": <int>,
         "columns": [lista de columnas finales],
@@ -84,6 +84,24 @@ def generate_clean_outputs(
         result_df["DESCUENTO"] = result_df["DESCUENTO"].apply(
             lambda x: f"{float(x)*100:.0f}%" if pd.notna(x) and isinstance(x, (int, float)) and 0 <= x <= 1 else x
         )
+
+    # Convertir columnas numéricas que deberían ser texto (IDs, PLU, etc.)
+    numeric_to_text_cols = ["ID_MARCA", "PLU", "ID_CATEGORIA", "ID_SUBCATEGORIA"]
+    for col in numeric_to_text_cols:
+        if col in result_df.columns:
+            result_df[col] = result_df[col].astype('Int64').astype(str)
+
+    # Convertir DESC_MARCA a Title Case (Primera Letra Mayúscula)
+    if "DESC_MARCA" in result_df.columns:
+        result_df["DESC_MARCA"] = result_df["DESC_MARCA"].astype(str).str.title()
+
+    # Convertir DESC_PLU a Sentence case (solo primera letra mayúscula)
+    if "DESC_PLU" in result_df.columns:
+        result_df["DESC_PLU"] = result_df["DESC_PLU"].astype(str).str.lower().str.capitalize()
+
+    # Convertir CONTENIDO a minúsculas
+    if "CONTENIDO" in result_df.columns:
+        result_df["CONTENIDO"] = result_df["CONTENIDO"].astype(str).str.lower()
 
     # 5) (Opcional) Columna de nombre de imagen
     if generate_image_names:

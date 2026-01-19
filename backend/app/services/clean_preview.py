@@ -39,6 +39,8 @@ def generate_preview(file_path: str) -> dict:
     rows: int = len(data_frame)
     sample: Dict = data_frame.iloc[0].to_dict()
 
+    sample = {k: (None if pd.isna(v) else v) for k, v in sample.items()}
+
     return {
         "columns": columns,
         "rows": rows,
