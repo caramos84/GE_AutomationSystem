@@ -105,7 +105,7 @@ W    Retorna:
 
     # 5) (Opcional) Columna de nombre de imagen
     if generate_image_names:
-        required = ["PLU", "ID_MARCA", "DESC_PLU", "CONTENIDO"]
+        required = ["PLU", "DESC_PLU", "DESC_MARCA", "CONTENIDO"]
         if all(col in result_df.columns for col in required):
             # Función auxiliar para quitar acentos
             def remove_accents(text):
@@ -116,13 +116,13 @@ W    Retorna:
             result_df["IMAGEN"] = (
                 result_df["PLU"].astype(str).str.zfill(6)
                 + "_"
-                + result_df["ID_MARCA"]
+                + result_df["DESC_PLU"]
                 .astype(str)
                 .apply(remove_accents)
                 .str.replace(r"\s+", "_", regex=True)
                 .str.upper()
                 + "_"
-                + result_df["DESC_PLU"]
+                + result_df["DESC_MARCA"]
                 .astype(str)
                 .apply(remove_accents)
                 .str.replace(r"\s+", "_", regex=True)
