@@ -103,6 +103,20 @@ W    Retorna:
     if "CONTENIDO" in result_df.columns:
         result_df["CONTENIDO"] = result_df["CONTENIDO"].astype(str).str.lower()
 
+    # Formatear columnas de precios con separador de miles (punto)
+    price_columns = ["PRECIO_REGULAR", "PRECIO_OFERTA", "AHORRO", "UNIDADES_PUBLICACION"]
+    for col in price_columns:
+        if col in result_df.columns:
+            result_df[col] = result_df[col].apply(
+                lambda x: "{:,.0f}".format(float(x)).replace(",", ".") if pd.notna(x) else x
+            )
+
+    # Formatear PUM a 1 decimal
+    if "PUM" in result_df.columns:
+        result_df["PUM"] = result_df["PUM"].apply(
+            lambda x: "{:.1f}".format(float(x)) if pd.notna(x) else x
+        )
+
     # 5) (Opcional) Columna de nombre de imagen
     if generate_image_names:
         required = ["PLU", "DESC_PLU", "DESC_MARCA", "CONTENIDO"]
