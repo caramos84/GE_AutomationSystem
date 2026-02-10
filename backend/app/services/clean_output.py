@@ -103,9 +103,23 @@ W    Retorna:
     if "CONTENIDO" in result_df.columns:
         result_df["CONTENIDO"] = result_df["CONTENIDO"].astype(str).str.lower()
 
+    # Formatear columnas de precios con separador de miles (punto)
+    price_columns = ["PRECIO_REGULAR", "PRECIO_OFERTA", "AHORRO", "UNIDADES_PUBLICACION"]
+    for col in price_columns:
+        if col in result_df.columns:
+            result_df[col] = result_df[col].apply(
+                lambda x: "{:,.0f}".format(float(x)).replace(",", ".") if pd.notna(x) else x
+            )
+
+    # Formatear PUM a 1 decimal
+    if "PUM" in result_df.columns:
+        result_df["PUM"] = result_df["PUM"].apply(
+            lambda x: "{:.1f}".format(float(x)) if pd.notna(x) else x
+        )
+
     # 5) (Opcional) Columna de nombre de imagen
     if generate_image_names:
-        required = ["PLU", "ID_MARCA", "DESC_PLU", "CONTENIDO"]
+        required = ["PLU", "DESC_PLU", "DESC_MARCA", "CONTENIDO"]
         if all(col in result_df.columns for col in required):
             # Función auxiliar para quitar acentos
             def remove_accents(text):
@@ -116,13 +130,13 @@ W    Retorna:
             result_df["IMAGEN"] = (
                 result_df["PLU"].astype(str).str.zfill(6)
                 + "_"
-                + result_df["ID_MARCA"]
+                + result_df["DESC_PLU"]
                 .astype(str)
                 .apply(remove_accents)
                 .str.replace(r"\s+", "_", regex=True)
                 .str.upper()
                 + "_"
-                + result_df["DESC_PLU"]
+                + result_df["DESC_MARCA"]
                 .astype(str)
                 .apply(remove_accents)
                 .str.replace(r"\s+", "_", regex=True)

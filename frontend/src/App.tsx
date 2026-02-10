@@ -562,7 +562,7 @@ function App() {
             {/* Opción de Generar Nombres */}
             <div style={{ marginBottom: '2rem' }}>
               {(() => {
-		const required = ['PLU', 'ID MARCA', 'DESC PLU', 'CONTENIDO']
+		const required = ['PLU', 'DESC PLU', 'DESC MARCA', 'CONTENIDO']
                 const missingCols = required.filter(col => !selectedColumns.includes(col))
                 const canGenerateNames = missingCols.length === 0
                 
