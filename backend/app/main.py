@@ -37,3 +37,4 @@ def read_health():
 
 app.include_router(uploads.router)
 app.include_router(cleaner.router, prefix="/clean", tags=["clean"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])

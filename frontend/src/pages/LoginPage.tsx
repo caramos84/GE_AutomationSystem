@@ -2,10 +2,6 @@ import { useState } from 'react'
 
 const API_BASE = 'http://localhost:8000'
 
-interface LoginPageProps {
-  onLoginSuccess: (token: string) => void
-}
-
 const Logo = () => (
   <svg width="64" height="64" viewBox="0 0 288.75 231.97" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -26,7 +22,7 @@ const Logo = () => (
   </svg>
 )
 
-export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
+export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -58,7 +54,8 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
       const data = await res.json()
       localStorage.setItem('token', data.access_token)
-      onLoginSuccess(data.access_token)
+      localStorage.setItem('isLogged', 'true')
+      window.location.href = '/app'
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al iniciar sesión')
     } finally {

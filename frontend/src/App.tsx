@@ -203,23 +203,49 @@ function App() {
         <div style={{ 
           ...baseStyle,
           display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: '0.125rem'
+          alignItems: 'center',
+          gap: '1rem'
         }}>
-          <span style={{ 
-            fontSize: '0.875rem',
-            fontWeight: 500,
-            color: '#0088FF'
+          <div style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            gap: '0.125rem'
           }}>
-            UserName0123
-          </span>
-          <span style={{ 
-            fontSize: '0.75rem',
-            color: '#6B7280'
-          }}>
-            User/Role
-          </span>
+            <span style={{ 
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              color: '#0088FF'
+            }}>
+              UserName0123
+            </span>
+            <span style={{ 
+              fontSize: '0.75rem',
+              color: '#6B7280'
+            }}>
+              User/Role
+            </span>
+          </div>
+          <button
+            onClick={() => {
+              localStorage.clear()
+              window.location.href = '/login'
+            }}
+            style={{
+              ...baseStyle,
+              padding: '0.5rem 1rem',
+              background: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              borderRadius: '8px',
+              color: '#6B7280',
+              fontSize: '0.875rem',
+              fontWeight: 500,
+              cursor: 'pointer',
+              transition: 'all 0.2s'
+            }}
+          >
+            Cerrar Sesión
+          </button>
         </div>
       </header>
 
